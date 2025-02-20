@@ -1,48 +1,112 @@
-import logo from "/logo.png";
-import "./App.css";
-import { getRandomWord } from "./utils";
-import { useState } from "react";
+import React, { useState, useEffect } from 'react'
+import './App.css'
+import { getRandomWord } from './utils'
+import Hangman from './Hangman'
 
-function App() {
-  // currWord is the current secret word for this round. Update this with the updater function after each round.
-  const [currWord, setCurrentWord] = useState(getRandomWord());
-  // guessedLetters stores all letters a user has guessed so far
-  const [guessedLetters, setGuessedLetters] = useState([]);
-
-  // Add additional states below as required.
+const App = () => {
+  const [currWord, setCurrentWord] = useState(getRandomWord())
+  const [guessedLetters, setGuessedLetters] = useState([])
+  const [inputValue, setInputValue] = useState('')
+  const [remainingGuesses, setRemainingGuesses] = useState(10)
+  const [gameOver, setGameOver] = useState(false)
+  const [win, setWin] = useState(false)
+  const [winCount, setWinCount] = useState(0)
+  const [lossCount, setLossCount] = useState(0)
 
   const generateWordDisplay = () => {
-    const wordDisplay = [];
-    // for...of is a string and array iterator that does not use index
-    for (let letter of currWord) {
-      if (guessedLetters.includes(letter)) {
-        wordDisplay.push(letter);
-      } else {
-        wordDisplay.push("_");
+    return currWord
+      .split('')
+      .map((letter) => (guessedLetters.includes(letter) ? letter : '_'))
+      .join(' ')
+  }
+
+  const handleInputChange = (event) => {
+    setInputValue(event.target.value.toLowerCase())
+  }
+
+  const handleFormSubmit = (event) => {
+    event.preventDefault()
+    if (gameOver) return
+
+    if (inputValue.length === 1 && /^[a-z]$/.test(inputValue)) {
+      if (!guessedLetters.includes(inputValue)) {
+        setGuessedLetters([...guessedLetters, inputValue])
+
+        if (!currWord.includes(inputValue)) {
+          setRemainingGuesses(remainingGuesses - 1)
+        }
       }
     }
-    return wordDisplay.toString();
-  };
+    setInputValue('')
+  }
 
-  // create additional function to power the
+  const checkGameStatus = () => {
+    if (currWord.split('').every((letter) => guessedLetters.includes(letter))) {
+      setWin(true)
+      setGameOver(true)
+      setWinCount(winCount + 1)
+    } else if (remainingGuesses <= 0) {
+      setGameOver(true)
+      setLossCount(lossCount + 1)
+    }
+  }
+
+  useEffect(() => {
+    checkGameStatus()
+  }, [guessedLetters, remainingGuesses])
+
+  const resetGame = () => {
+    setCurrentWord(getRandomWord())
+    setGuessedLetters([])
+    setRemainingGuesses(10)
+    setGameOver(false)
+    setWin(false)
+  }
 
   return (
     <>
-      <div>
-        <img src={logo} className="logo" alt="Rocket logo" />
-      </div>
       <div className="card">
         <h1>Guess The Word 🚀</h1>
+
+        {/* Hangman Component */}
+        <Hangman wrongGuesses={10 - remainingGuesses} />
+
         <h3>Word Display</h3>
-        {generateWordDisplay()}
+        <p>{generateWordDisplay()}</p>
         <h3>Guessed Letters</h3>
-        {guessedLetters.length > 0 ? guessedLetters.toString() : "-"}
-        <br />
-        <h3>Input</h3>
-        {/* Insert form element here */}
+        <p>{guessedLetters.length > 0 ? guessedLetters.join(', ') : '-'}</p>
+        <h3>Remaining Guesses: {remainingGuesses}</h3>
+
+        <h3>Scoreboard</h3>
+        <p>
+          ✅ Wins: {winCount} | ❌ Losses: {lossCount}
+        </p>
+
+        {gameOver ? (
+          <div>
+            <h2 className={win ? 'winning-message' : 'game-over'}>
+              {win
+                ? '🎉 You Won! 🎉'
+                : `❌ You Lost! The word was "${currWord}".`}
+            </h2>
+            <button onClick={resetGame}>Play Again</button>
+          </div>
+        ) : (
+          <form onSubmit={handleFormSubmit}>
+            <input
+              type="text"
+              value={inputValue}
+              onChange={handleInputChange}
+              maxLength="1"
+              pattern="[a-zA-Z]"
+              required
+            />
+            <button type="submit">Guess</button>
+          </form>
+        )}
       </div>
     </>
-  );
+  )
 }
 
-export default App;
+export default App

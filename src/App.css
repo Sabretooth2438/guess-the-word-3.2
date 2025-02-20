@@ -1,3 +1,98 @@
+/* Global Styles */
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+}
+
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+
+a:hover {
+  color: #535bf2;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+h1 {
+  font-size: 2.5em;
+  margin-bottom: 10px;
+}
+
+h3 {
+  margin-top: 15px;
+  color: #ffaa00;
+}
+
+p {
+  font-size: 1.5em;
+  letter-spacing: 2px;
+}
+
+input {
+  padding: 10px;
+  font-size: 1.2em;
+  text-align: center;
+  width: 50px;
+  border-radius: 5px;
+  border: 1px solid #ffaa00;
+}
+
+button {
+  background: #ffaa00;
+  color: black;
+  font-size: 1.2em;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background 0.25s, border-color 0.25s;
+}
+
+button:hover {
+  background: #ffcc00;
+  border-color: #646cff;
+}
+
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+
+  a:hover {
+    color: #747bff;
+  }
+
+  button {
+    background-color: #f9f9f9;
+  }
+}
+
+/* Component Styles */
 #root {
   max-width: 1280px;
   margin: 0 auto;
@@ -11,9 +106,11 @@
   will-change: filter;
   transition: filter 300ms;
 }
+
 .logo:hover {
   filter: drop-shadow(0 0 2em #646cffaa);
 }
+
 .logo.react:hover {
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
@@ -35,8 +132,22 @@
 
 .card {
   padding: 2em;
+  background: #1e1e1e;
+  border-radius: 10px;
+  color: white;
+  text-align: center;
 }
 
-.read-the-docs {
-  color: #888;
+.game-over, .winning-message {
+  font-size: 1.8em;
+  font-weight: bold;
+  margin-top: 20px;
+}
+
+.game-over {
+  color: red;
+}
+
+.winning-message {
+  color: green;
 }
