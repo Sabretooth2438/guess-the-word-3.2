@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import './App.css'
 import { getRandomWord } from './utils'
 import Hangman from './Hangman'
@@ -21,22 +21,18 @@ const App = () => {
   }
 
   const handleInputChange = (event) => {
-    setInputValue(event.target.value.toLowerCase())
-  }
+    const letter = event.target.value.toLowerCase()
 
-  const handleFormSubmit = (event) => {
-    event.preventDefault()
-    if (gameOver) return
+    if (letter.length === 1 && /^[a-z]$/.test(letter)) {
+      if (!guessedLetters.includes(letter)) {
+        setGuessedLetters([...guessedLetters, letter])
 
-    if (inputValue.length === 1 && /^[a-z]$/.test(inputValue)) {
-      if (!guessedLetters.includes(inputValue)) {
-        setGuessedLetters([...guessedLetters, inputValue])
-
-        if (!currWord.includes(inputValue)) {
-          setRemainingGuesses(remainingGuesses - 1)
+        if (!currWord.includes(letter)) {
+          setRemainingGuesses((prevGuesses) => prevGuesses - 1)
         }
       }
     }
+
     setInputValue('')
   }
 
@@ -68,7 +64,6 @@ const App = () => {
       <div className="card">
         <h1>Guess The Word 🚀</h1>
 
-        {/* Hangman Component */}
         <Hangman wrongGuesses={10 - remainingGuesses} />
 
         <h3>Word Display</h3>
@@ -92,7 +87,7 @@ const App = () => {
             <button onClick={resetGame}>Play Again</button>
           </div>
         ) : (
-          <form onSubmit={handleFormSubmit}>
+          <div>
             <input
               type="text"
               value={inputValue}
@@ -101,8 +96,7 @@ const App = () => {
               pattern="[a-zA-Z]"
               required
             />
-            <button type="submit">Guess</button>
-          </form>
+          </div>
         )}
       </div>
     </>

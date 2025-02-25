@@ -138,7 +138,8 @@ button:focus-visible {
   text-align: center;
 }
 
-.game-over, .winning-message {
+.game-over,
+.winning-message {
   font-size: 1.8em;
   font-weight: bold;
   margin-top: 20px;
@@ -150,4 +151,58 @@ button:focus-visible {
 
 .winning-message {
   color: green;
+}
+
+/* Hangman container */
+.hangman-container {
+  text-align: center;
+  padding: 20px;
+}
+
+/* Hangman SVG */
+.hangman-svg {
+  border: 2px solid #444;
+  background-color: #f8f8f8;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Gallows Styling */
+.gallows {
+  stroke: #3d3d3d;
+  stroke-width: 5;
+  stroke-linecap: round;
+}
+
+/* Hangman Parts */
+.hangman-part {
+  stroke: #d9534f; /* Red color for hangman */
+  stroke-width: 5;
+  stroke-linecap: round;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+/* Show parts progressively */
+.head {
+  fill: none;
+  opacity: 1;
+}
+
+.body {
+  opacity: 1;
+}
+
+.arm {
+  opacity: 1;
+}
+
+.leg {
+  opacity: 1;
+}
+
+/* Make parts visible progressively */
+.hangman-part:nth-child(n + 5) {
+  opacity: 1 !important;
 }
